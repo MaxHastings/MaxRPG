@@ -4,6 +4,12 @@ import com.maxrpg.server.packets.Packet;
 
 public class ChatManager 
 {	
+	/* Chat IDs:
+	 * 0 - Server Broadcast
+	 * 1 - Regular chat message
+	 * 2 - Whisper message
+	 */
+	
 	private Player player;
 	
 	public ChatManager(Player player)
@@ -18,7 +24,7 @@ public class ChatManager
 	
 	public void sendChatMessage(Player from, String msg)
 	{
-		String chat = from.getName() + ": " + msg;
+		String chat = from.getName() + ":" + msg;
 		sendMessage(chat, 1);
 	}	
 	
