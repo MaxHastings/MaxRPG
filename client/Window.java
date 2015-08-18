@@ -1,8 +1,12 @@
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 
+import javax.swing.BorderFactory;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 
 public class Window extends JFrame
@@ -14,6 +18,10 @@ public class Window extends JFrame
 	
 	private Game game;
 	
+	private ChatHud chatHud;
+	
+	private CustomPanel panel;
+	
 	public Window(Game game, String title, int width, int height)
 	{
 		super(title);
@@ -21,19 +29,34 @@ public class Window extends JFrame
 		setSize(width, height);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
+		//setLayout(new FlowLayout());
+		
+		add(new CustomPanel(game));
+		//pack();
+		
 		//addOnKeyListener(listnerClass);
 		
 		this.game = game;
 		this.width = width;
 		this.height = height;
+		
+		//chatHud = new ChatHud(this, 10, (int) (height - height * 0.20));
+		//chatHud.setMessageLimit(10);
 	}
 	
-	public void paint(Graphics graphics)
+	//public void paint(Graphics g)
+	//{	
+		//super.paint(g);
+	//}
+	
+	
+	public int getWidth()
 	{
-		graphics.setColor(Color.BLACK);
-		graphics.fillRect(0, 0, width, height);
-		
-		graphics.setColor(Color.WHITE);
-		graphics.drawString("Hello from simba and max", width / 2, height / 2);
+		return width;
+	}
+	
+	public int getHeight()
+	{
+		return height;
 	}
 }
