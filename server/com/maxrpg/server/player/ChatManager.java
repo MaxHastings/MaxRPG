@@ -12,9 +12,12 @@ public class ChatManager
 	
 	private Player player;
 	
+	public Player lastWhisperer;
+	
 	public ChatManager(Player player)
 	{
 		this.player = player;
+		lastWhisperer = null;
 	}
 	
 	public void sendBroadcast(String msg)
@@ -24,14 +27,19 @@ public class ChatManager
 	
 	public void sendChatMessage(Player from, String msg)
 	{
-		String chat = from.getName() + ":" + msg;
+		String chat = from.getName() + ": " + msg;
 		sendMessage(chat, 1);
 	}	
 	
-	public void sendWhisper(Player from, String msg)
+	public void sendWhisper(Player recipient, String msg)
 	{
-		String whisper = "From " + from.getName() + ": " + msg;
-		sendMessage(whisper, 2);
+		String whisperFrom = "From " + player.getName() + ": " + msg;
+		recipient.getChatManager().sendMessage(whisperFrom, 2);
+		recipient.getChatManager().lastWhisperer = player;
+		
+		String whisperTo = "To " + recipient.getName() + ": " + msg;
+		sendMessage(whisperTo, 2);
+		lastWhisperer = recipient;
 	}
 	
 	private void sendMessage(String msg, int type)

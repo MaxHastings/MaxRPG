@@ -1,5 +1,6 @@
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -22,6 +23,8 @@ public class ChatHud extends JPanel implements ActionListener
 
 	private List<String> messages;
 	
+	private List<Color> messageColors;
+	
 	private JTextField inputText;
 	
 	private int msgLimit;
@@ -35,6 +38,7 @@ public class ChatHud extends JPanel implements ActionListener
 		
 		this.parent = parent;
 		messages = new ArrayList<String>();
+		messageColors = new ArrayList<Color>();
 		
 		int parentWidth = (int) parent.getPreferredSize().getWidth();
 		int parentHeight = (int) parent.getPreferredSize().getHeight();
@@ -61,6 +65,12 @@ public class ChatHud extends JPanel implements ActionListener
 		
 		for(int i = 0; i < messages.size(); i++)
 		{
+			Color color = messageColors.get(messages.size() - 1 - i);
+			
+			//if(color.getRed() == 0 && color.getGreen() == 100 && color.getBlue() == 0)
+			//	g.setFont(new Font("TimesRoman", Font.BOLD, 12)); 
+				
+			g.setColor(color);
 			g.drawString(messages.get(messages.size() - 1 - i), 2, startY - (i * 15));
 		}
 	}
@@ -88,7 +98,6 @@ public class ChatHud extends JPanel implements ActionListener
 		{
 			Client client = parent.getGame().getClient();
 			client.getOutput().createPacket(Packet.CHAT);
-			client.getOutput().putByte(1);
 			client.getOutput().putString(inputText.getText());
 			client.getOutput().endPacket();
 			client.flushStream();
@@ -97,14 +106,37 @@ public class ChatHud extends JPanel implements ActionListener
 		inputText.setText("");
 	}
 	
-	public void addMessage(String msg)
+	public void addMessage(String msg, int chatType)
 	{
 		messages.add(msg);
+		messageColors.add(getTextColor(chatType));
 		
 		if(messages.size() > msgLimit)
+		{
 			messages.remove(0);
+			messageColors.remove(0);
+		}
 		
 		repaint();
+	}
+	
+	public Color getTextColor(int msgType)
+	{
+		switch(msgType)
+		{
+			case 0:
+				return new Color(0, 150, 0);
+				//return Color.GREEN;
+				
+			case 1:
+				return Color.BLACK;
+				
+			case 2:
+				return Color.BLUE;
+				
+			default:
+				return Color.BLACK;
+		}
 	}
 	
 }
