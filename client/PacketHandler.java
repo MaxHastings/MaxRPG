@@ -23,7 +23,7 @@ public class PacketHandler
 				int chatType = client.getInput().readUnsignedByte();
 				String chatMsg = client.getInput().readString();
 				
-				game.getWindow().getChatHud().addMessage(chatMsg);
+				game.getWindow().getChatHud().addMessage(chatMsg, chatType);
 				
 				break;
 				
@@ -49,6 +49,37 @@ public class PacketHandler
 				game.getWindow().setNumberOfPlayers(count);
 				
 				break;
+				
+			
+				
+			case Packet.INIT:
+				String pName = client.getInput().readString();
+				int pID = client.getInput().readUnsignedByte();
+				int pX = client.getInput().readWord();
+				int pY = client.getInput().readWord();
+				
+				game.getWindow().createPlayer(pName, pID, pX, pY, true);
+				
+				break;
+				
+				
+			
+			case Packet.NEW_PLAYER:
+				String playerName = client.getInput().readString();
+				int playerID = client.getInput().readUnsignedByte();
+				int playerX = client.getInput().readWord();
+				int playerY = client.getInput().readWord();
+				
+				game.getWindow().createPlayer(playerName, playerID, playerX, playerY, false);
+				break;
+				
+				
+			
+			case Packet.REMOVE_PLAYER:
+				int removeID = client.getInput().readWord();
+				game.getWindow().removePlayer(removeID);
+				break;
+				
 		}
 	}
 	

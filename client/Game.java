@@ -101,5 +101,6 @@ public class Game implements DataListener
 	public void onDisconnect(Client client) 
 	{
 		System.out.println("Disconnected from server.");
+		JOptionPane.showMessageDialog(null, "You have been disconnected from the server.");
 	}
 }

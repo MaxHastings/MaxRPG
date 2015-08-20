@@ -34,6 +34,9 @@ public class SetName implements Packet
 		if(success == 1)
 		{
 			player.setName(name);
+			player.getChatManager().sendBroadcast("Welcome to Max And Simba's RPG. Simba does all the work though :).");
+			player.init();
+			server.sendNewPlayer(player);
 			
 			int count = server.clientGroup.size();
 			for(Client c : server.clientGroup)
@@ -43,6 +46,7 @@ public class SetName implements Packet
 				p.getOutput().putWord(count);
 				p.getOutput().endPacket();
 				p.flushStream();
+				
 			}
 		}
 	}
